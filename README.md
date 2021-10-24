@@ -42,4 +42,4 @@ cmake -S "你的repo的路径" -B "build目录的路径"
 cmake --build "build目录的路径" -j`nproc`
 ```
 
-你的 `CMakeLists.txt` 必须将可执行文件直接输出到 `build` 目录的根目录, 且将其命名为 `compiler`.
+你的 `CMakeLists.txt` 必须将可执行文件直接输出到所指定的 build 目录的根目录, 且将其命名为 `compiler`.
