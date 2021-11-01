@@ -10,7 +10,8 @@ std::unordered_map<char, const char *> generator = {
 end f_main
 )"},
     {'t', R"(f_main [0]
-  return 0
+  a0 = 0
+  return
 end f_main
 )"},
     {'r', R"(  .text
