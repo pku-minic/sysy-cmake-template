@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.13)
 project(compiler)
 
+# settings
+# set to OFF to enable C mode
+set(CPP_MODE ON)
+if(CPP_MODE)
+  set(FB_EXT ".cpp")
+else()
+  set(FB_EXT ".c")
+endif()
+message(STATUS "Flex/Bison generated source file extension: ${FB_EXT}")
+
 # enable all warnings
 if(MSVC)
   add_compile_options(/W3)
@@ -12,6 +22,8 @@ endif()
 # options about libraries and includes
 option(LIB_DIR "directory of library" "$ENV{CDE_LIBRARY_PATH}/native")
 option(INC_DIR "directory of include files" "$ENV{CDE_INCLUDE_PATH}")
+message(STATUS "Library directory: ${LIB_DIR}")
+message(STATUS "Include directory: ${INC_DIR}")
 
 # find Flex/Bison
 find_package(FLEX REQUIRED)
@@ -21,8 +33,8 @@ find_package(BISON REQUIRED)
 file(GLOB_RECURSE L_SOURCES "src/*.l")
 file(GLOB_RECURSE Y_SOURCES "src/*.y")
 if(NOT (L_SOURCES STREQUAL "" AND Y_SOURCES STREQUAL ""))
-  string(REGEX REPLACE ".*/(.*)\\.l" "${CMAKE_CURRENT_BINARY_DIR}/\\1.lex.cpp" L_OUTPUTS "${L_SOURCES}")
-  string(REGEX REPLACE ".*/(.*)\\.y" "${CMAKE_CURRENT_BINARY_DIR}/\\1.tab.cpp" Y_OUTPUTS "${Y_SOURCES}")
+  string(REGEX REPLACE ".*/(.*)\\.l" "${CMAKE_CURRENT_BINARY_DIR}/\\1.lex${FB_EXT}" L_OUTPUTS "${L_SOURCES}")
+  string(REGEX REPLACE ".*/(.*)\\.y" "${CMAKE_CURRENT_BINARY_DIR}/\\1.tab${FB_EXT}" Y_OUTPUTS "${Y_SOURCES}")
   flex_target(Lexer ${L_SOURCES} ${L_OUTPUTS})
   bison_target(Parser ${Y_SOURCES} ${Y_OUTPUTS})
   add_flex_bison_dependency(Lexer Parser)
