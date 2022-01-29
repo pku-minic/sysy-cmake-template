@@ -9,6 +9,10 @@ else()
   add_compile_options(-Wall -Wno-register)
 endif()
 
+# options about libraries and includes
+option(LIB_DIR "directory of library" "$ENV{CDE_LIBRARY_PATH}/native")
+option(INC_DIR "directory of include files" "$ENV{CDE_INCLUDE_PATH}")
+
 # find Flex/Bison
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
@@ -24,9 +28,13 @@ if(NOT (L_SOURCES STREQUAL "" AND Y_SOURCES STREQUAL ""))
   add_flex_bison_dependency(Lexer Parser)
 endif()
 
+# project link directories
+link_directories(${LIB_DIR})
+
 # project include directories
 include_directories(src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${INC_DIR})
 
 # all of C/C++ source files
 file(GLOB_RECURSE C_SOURCES "src/*.c")
@@ -38,3 +46,4 @@ set(SOURCES ${C_SOURCES} ${CXX_SOURCES} ${CC_SOURCES}
 # executable
 add_executable(compiler ${SOURCES})
 set_target_properties(compiler PROPERTIES C_STANDARD 11 CXX_STANDARD 17)
+target_link_libraries(compiler koopa)
