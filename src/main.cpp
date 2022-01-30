@@ -5,18 +5,19 @@
 using namespace std;
 
 std::unordered_map<char, const char *> generator = {
-    {'e', R"(f_main [0]
-  return 0
-end f_main
-)"},
-    {'t', R"(f_main [0]
-  a0 = 0
-  return
-end f_main
+    {'k', R"(fun @main(): i32 {
+%entry:
+  ret 0
+}
 )"},
     {'r', R"(  .text
-  .align 2
-  .global main
+  .globl main
+main:
+  li a0, 0
+  ret
+)"},
+    {'p', R"(  .text
+  .globl main
 main:
   li a0, 0
   ret
@@ -24,9 +25,8 @@ main:
 };
 
 int main(int argc, const char *argv[]) {
-  assert(argc == 5 || argc == 6);
-  char mode = argc == 6 ? argv[2][1] : 'r';
-  ofstream ofs(argv[argc == 6 ? 5 : 4]);
-  ofs << generator[mode];
+  assert(argc == 5);
+  ofstream ofs(argv[4]);
+  ofs << generator[argv[1][1]];
   return 0;
 }
