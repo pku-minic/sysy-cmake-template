@@ -20,8 +20,8 @@ else()
 endif()
 
 # options about libraries and includes
-option(LIB_DIR "directory of library" "$ENV{CDE_LIBRARY_PATH}/native")
-option(INC_DIR "directory of include files" "$ENV{CDE_INCLUDE_PATH}")
+set(LIB_DIR "$ENV{CDE_LIBRARY_PATH}/native" CACHE STRING "directory of libraries")
+set(INC_DIR "$ENV{CDE_INCLUDE_PATH}" CACHE STRING "directory of includes")
 message(STATUS "Library directory: ${LIB_DIR}")
 message(STATUS "Include directory: ${INC_DIR}")
 
@@ -58,4 +58,4 @@ set(SOURCES ${C_SOURCES} ${CXX_SOURCES} ${CC_SOURCES}
 # executable
 add_executable(compiler ${SOURCES})
 set_target_properties(compiler PROPERTIES C_STANDARD 11 CXX_STANDARD 17)
-target_link_libraries(compiler koopa)
+target_link_libraries(compiler koopa pthread dl)
