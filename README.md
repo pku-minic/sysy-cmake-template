@@ -18,7 +18,7 @@ git clone https://github.com/pku-minic/sysy-cmake-template.git
 
 ```sh
 cd sysy-make-template
-cmake -B build
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
 cmake --build build
 ```
 
